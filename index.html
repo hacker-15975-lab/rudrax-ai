@@ -3,394 +3,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#050505">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>rudrax</title>
-<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
+/* Android 16 / Material You Inspired Minimal UI */
 :root {
-  /* Default Dark Theme */
-  --bg-color: #09090b;
-  --surface: rgba(24, 24, 27, 0.65);
-  --surface-solid: #18181b;
-  --border: rgba(255, 255, 255, 0.08);
-  --primary: #2563eb;
-  --primary-hover: #3b82f6;
-  --text-main: #f4f4f5;
-  --text-muted: #a1a1aa;
-  --msg-user: #2563eb;
-  --msg-bot: rgba(39, 39, 42, 0.5);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --danger: #ef4444;
+  --sys-bg: #141414;
+  --sys-surface: #1e1e1e;
+  --sys-surface-variant: #2d2d2d;
+  --sys-primary: #a8c7fa;
+  --sys-on-primary: #062e6f;
+  --sys-text: #e2e2e2;
+  --sys-text-muted: #8e8e8e;
+  --sys-border: rgba(255, 255, 255, 0.08);
+  --sys-msg-user: #a8c7fa;
+  --sys-msg-bot: #1e1e1e;
+  --sys-on-msg-user: #062e6f;
+  --sys-radius-large: 28px;
+  --sys-radius-medium: 16px;
 }
 
 [data-theme="light"] {
-  --bg-color: #f4f4f5;
-  --surface: rgba(255, 255, 255, 0.7);
-  --surface-solid: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
-  --primary: #007AFF;
-  --primary-hover: #0056D6;
-  --text-main: #18181b;
-  --text-muted: #71717a;
-  --msg-user: #007AFF;
-  --msg-bot: rgba(255, 255, 255, 0.8);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --sys-bg: #fdfdfd;
+  --sys-surface: #f0f2f5;
+  --sys-surface-variant: #e1e3e6;
+  --sys-primary: #0b57d0;
+  --sys-on-primary: #ffffff;
+  --sys-text: #1a1a1a;
+  --sys-text-muted: #5e5e5e;
+  --sys-border: rgba(0, 0, 0, 0.08);
+  --sys-msg-user: #d3e3fd;
+  --sys-msg-bot: #f0f2f5;
+  --sys-on-msg-user: #041e49;
 }
 
 [data-theme="amoled"] {
-  --bg-color: #000000;
-  --surface: rgba(10, 10, 10, 0.8);
-  --surface-solid: #0a0a0a;
-  --border: rgba(255, 255, 255, 0.1);
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --text-main: #ffffff;
-  --text-muted: #9ca3af;
-  --msg-user: #3b82f6;
-  --msg-bot: rgba(15, 15, 15, 0.9);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --sys-bg: #000000;
+  --sys-surface: #0a0a0a;
+  --sys-surface-variant: #141414;
+  --sys-primary: #8ab4f8;
+  --sys-on-primary: #000000;
+  --sys-text: #ffffff;
+  --sys-text-muted: #707070;
+  --sys-border: rgba(255, 255, 255, 0.05);
+  --sys-msg-user: #1a73e8;
+  --sys-msg-bot: #0a0a0a;
+  --sys-on-msg-user: #ffffff;
 }
 
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
 }
 
-body {
-  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  height: 100dvh;
-  display: flex;
-  overflow: hidden;
+html, body {
+  /* Forces full screen, prevents header push-up on mobile keyboard */
+  height: 100%; width: 100%;
+  position: fixed; top: 0; left: 0; overflow: hidden;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  background-color: var(--sys-bg);
+  color: var(--sys-text);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: var(--sys-surface-variant); border-radius: 10px; }
 
-/* Typography & Base Forms */
-h3, h4 { font-weight: 600; letter-spacing: 0.3px; color: var(--text-main); }
-input, textarea, button { font-family: inherit; }
-
-.glass {
-  background: var(--surface);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid var(--border);
+/* Main Layout */
+.app-container {
+  display: flex; flex-direction: column;
+  height: 100%; width: 100%; position: relative;
 }
 
-/* Sidebar Styling */
-.sidebar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 100%;
-  width: 320px;
-  transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  padding: 24px 20px;
-  overflow-y: auto;
-  z-index: 1000;
-  border-right: 1px solid var(--border);
-  border-radius: 0 28px 28px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: var(--shadow);
-}
-.sidebar.open { transform: translateX(0); }
-
-.sidebar-section { display: flex; flex-direction: column; gap: 12px; }
-.sidebar-section h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
-
-.input-box {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: rgba(128, 128, 128, 0.08);
-  color: var(--text-main);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
-}
-.input-box:focus { border-color: var(--primary); background: rgba(128, 128, 128, 0.12); }
-
-.action-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 16px;
-  background: var(--primary);
-  color: #fff;
-  font-weight: 500;
-  font-size: 15px;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.action-btn:active { transform: scale(0.97); }
-.action-btn.danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
-
-/* Custom Model List in Sidebar */
-.model-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 200px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-.model-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  background: rgba(128, 128, 128, 0.05);
-  border-radius: 12px;
-  font-size: 13px;
-  border: 1px solid var(--border);
-}
-.model-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
-.model-item button {
-  background: none; border: none; color: var(--danger); cursor: pointer; padding: 4px; border-radius: 50%; display:flex;
-}
-.add-model-wrapper { display: flex; gap: 8px; }
-.add-model-wrapper .input-box { flex: 1; }
-.add-model-wrapper .add-btn {
-  background: var(--primary); color: #fff; border: none; border-radius: 16px; width: 48px; cursor: pointer; display:flex; align-items:center; justify-content:center;
-}
-
-.copyright {
-  margin-top: auto;
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 10px 0;
-  transition: color 0.3s;
-  user-select: none;
-}
-
-/* Overlay */
-.overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 999;
-}
-.overlay.active { opacity: 1; pointer-events: auto; }
-
-/* Main Interface */
-.main { flex: 1; display: flex; flex-direction: column; width: 100%; position: relative; }
-
-/* Header & Dropdown */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px;
-  position: relative;
-  z-index: 500;
-  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--sys-bg);
+  z-index: 10;
+  padding-top: max(12px, env(safe-area-inset-top));
 }
-.header-left, .header-right { display: flex; align-items: center; gap: 16px; }
 
 .icon-btn {
-  background: none; border: none; color: var(--text-main); cursor: pointer;
-  padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s;
+  background: transparent; border: none;
+  color: var(--sys-text);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: 0.2s;
 }
-.icon-btn:active { background: rgba(128,128,128,0.2); }
+.icon-btn:active { background: var(--sys-surface-variant); }
 
-.custom-dropdown { position: relative; }
-.dropdown-selected {
+/* Stylish Dropdown */
+.model-selector {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--sys-surface);
   padding: 8px 16px;
-  background: rgba(128, 128, 128, 0.1);
-  border: 1px solid var(--border);
   border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 14px; font-weight: 500;
+  color: var(--sys-text);
+  cursor: pointer; border: 1px solid var(--sys-border);
   transition: 0.2s;
+  max-width: 60%;
 }
-.dropdown-selected:active { transform: scale(0.97); }
-.dropdown-options {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 260px;
-  max-height: 300px;
-  overflow-y: auto;
-  background: var(--surface-solid);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  opacity: 0; pointer-events: none;
-  transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-  z-index: 600;
-  padding: 8px;
-}
-.custom-dropdown.active .dropdown-options { opacity: 1; pointer-events: auto; top: calc(100% + 12px); }
-.dropdown-option {
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  cursor: pointer;
-  color: var(--text-main);
-  transition: background 0.2s;
+.model-selector span {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.dropdown-option:hover { background: rgba(128,128,128,0.1); }
-.dropdown-option.active { color: var(--primary); background: rgba(37, 99, 235, 0.1); font-weight: 600; }
+.model-selector:active { transform: scale(0.97); }
 
-/* Chat Container */
 .chat-container {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-bottom: 110px; /* Space for input */
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 16px 20px 100px 20px;
+  display: flex; flex-direction: column; gap: 20px;
   scroll-behavior: smooth;
 }
 
 .msg {
-  max-width: 88%;
-  padding: 14px 18px;
-  border-radius: 24px;
-  line-height: 1.6;
-  font-size: 15px;
+  max-width: 88%; padding: 14px 18px;
+  border-radius: var(--sys-radius-large);
+  font-size: 15px; line-height: 1.5;
   word-wrap: break-word;
-  animation: fadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* Flicker Prevention */
-  transform: translateZ(0);
+  animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .msg p { margin: 0 0 10px 0; }
 .msg p:last-child { margin: 0; }
-.msg pre { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; overflow-x: auto; margin: 10px 0; }
-.msg code { font-family: ui-monospace, monospace; font-size: 13.5px; }
-.msg:not(pre) code { background: rgba(128,128,128,0.2); padding: 2px 6px; border-radius: 6px; }
+.msg pre { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 12px; overflow-x: auto; margin: 8px 0; }
+.msg code { font-family: monospace; font-size: 13px; }
 
 .user {
   align-self: flex-end;
-  background: var(--msg-user);
-  color: #fff;
+  background: var(--sys-msg-user);
+  color: var(--sys-on-msg-user);
   border-bottom-right-radius: 6px;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 .bot {
   align-self: flex-start;
-  background: var(--msg-bot);
-  border: 1px solid var(--border);
-  color: var(--text-main);
+  background: var(--sys-msg-bot);
+  border: 1px solid var(--sys-border);
+  color: var(--sys-text);
   border-bottom-left-radius: 6px;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Input Area */
 .input-area {
-  position: absolute;
-  bottom: 0; left: 0; width: 100%;
-  padding: 16px 20px 24px;
-  background: linear-gradient(to top, var(--bg-color) 60%, transparent);
-  display: flex;
-  justify-content: center;
-  z-index: 100;
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--sys-bg) 70%, transparent);
+  display: flex; justify-content: center;
 }
 
 .input-wrapper {
-  display: flex;
-  align-items: flex-end;
-  padding: 8px 8px 8px 16px;
-  border-radius: 28px;
-  width: 100%;
-  max-width: 800px;
-  box-shadow: var(--shadow);
-  gap: 8px;
-  transition: all 0.3s ease;
+  display: flex; align-items: flex-end;
+  background: var(--sys-surface);
+  border: 1px solid var(--sys-border);
+  padding: 6px 6px 6px 12px;
+  border-radius: var(--sys-radius-large);
+  width: 100%; max-width: 800px;
+  transition: 0.3s;
 }
+.input-wrapper:focus-within { border-color: var(--sys-primary); }
 
 .input-field {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text-main);
-  font-size: 15px;
-  padding: 12px 0;
-  max-height: 120px;
-  resize: none;
-  font-family: inherit;
-  line-height: 1.4;
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--sys-text); font-size: 15px;
+  padding: 12px 8px; font-family: inherit;
+  resize: none; max-height: 120px; min-height: 44px;
 }
-.input-field::placeholder { color: var(--text-muted); }
+.input-field::placeholder { color: var(--sys-text-muted); }
 
 .send-btn {
-  background: var(--text-muted);
-  color: var(--bg-color);
-  border: none;
-  border-radius: 50%;
-  width: 40px; height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  flex-shrink: 0;
-  opacity: 0.6;
-}
-.send-btn svg { width: 18px; height: 18px; }
-.send-btn.active {
-  background: var(--primary);
-  color: #fff;
-  opacity: 1;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-}
-.send-btn:active { transform: scale(0.95); }
-
-.input-icon-btn {
-  background: none; border: none; color: var(--text-muted); cursor: pointer;
-  padding: 10px; border-radius: 50%;
+  background: var(--sys-primary); color: var(--sys-on-primary);
+  border: none; border-radius: 50%;
+  width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
-  transition: color 0.2s, background 0.2s;
+  cursor: pointer; transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 0; transform: scale(0.5); pointer-events: none;
   flex-shrink: 0;
 }
-.input-icon-btn:hover { color: var(--text-main); background: rgba(128,128,128,0.1); }
+.send-btn.active { opacity: 1; transform: scale(1); pointer-events: auto; }
 
-.image-preview-wrapper { margin-top: 10px; position: relative; display: inline-block; }
-.image-preview { max-width: 200px; border-radius: 12px; border: 1px solid var(--border); }
-.remove-img-btn {
-  position: absolute; top: -8px; right: -8px; background: var(--surface-solid); border: 1px solid var(--border); color: var(--text-main);
-  border-radius: 50%; width: 24px; height: 24px; cursor: pointer; display:flex; align-items:center; justify-content:center; font-size:12px;
+.image-preview { max-width: 100%; border-radius: 12px; margin-top: 8px; }
+.attached-image-container { position: absolute; bottom: 80px; left: 24px; max-width: 80px; border-radius: 12px; overflow: hidden; display: none; border: 2px solid var(--sys-primary); z-index: 20;}
+.attached-image-container img { width: 100%; display: block; }
+.remove-img-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+/* Sidebar & Modals */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 99;
 }
+.overlay.active { opacity: 1; pointer-events: auto; }
+
+.sidebar {
+  position: fixed; top: 0; left: 0; height: 100%; width: 320px;
+  background: var(--sys-bg); transform: translateX(-100%);
+  transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; flex-direction: column;
+  z-index: 100; border-right: 1px solid var(--sys-border);
+}
+.sidebar.open { transform: translateX(0); }
+
+.sidebar-content { flex: 1; overflow-y: auto; padding: 24px 20px; }
+.sidebar h3 { font-size: 18px; font-weight: 500; margin-bottom: 16px; color: var(--sys-text); display: flex; align-items: center; gap: 8px;}
+
+.group { background: var(--sys-surface); padding: 16px; border-radius: var(--sys-radius-medium); margin-bottom: 16px; border: 1px solid var(--sys-border); }
+
+.input-box {
+  width: 100%; padding: 14px 16px; margin-bottom: 12px;
+  border-radius: 12px; border: 1px solid var(--sys-border);
+  background: var(--sys-bg); color: var(--sys-text);
+  font-size: 14px; outline: none; transition: 0.2s; font-family: inherit;
+}
+.input-box:focus { border-color: var(--sys-primary); }
+
+.btn {
+  width: 100%; padding: 14px; border: none; border-radius: 12px;
+  background: var(--sys-surface-variant); color: var(--sys-text);
+  font-weight: 500; font-size: 15px; cursor: pointer;
+  transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; font-family: inherit;
+}
+.btn-primary { background: var(--sys-primary); color: var(--sys-on-primary); }
+.btn-danger { background: rgba(255, 59, 48, 0.1); color: #ff453a; }
+.btn:active { transform: scale(0.98); }
+
+/* Model Management */
+.model-item { display: flex; justify-content: space-between; align-items: center; background: var(--sys-bg); padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; }
+.model-item button { background: none; border: none; color: #ff453a; cursor: pointer; padding: 4px; }
+.add-model-row { display: flex; gap: 8px; margin-top: 12px; }
+.add-model-row input { flex: 1; margin: 0; }
+
+/* Custom Dropdown Modal */
+.dropdown-modal {
+  position: fixed; bottom: 0; left: 0; width: 100%;
+  background: var(--sys-surface);
+  border-radius: 24px 24px 0 0;
+  padding: 20px; z-index: 101;
+  transform: translateY(100%); transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  max-height: 70vh; display: flex; flex-direction: column;
+}
+.dropdown-modal.open { transform: translateY(0); }
+.dropdown-header { font-size: 18px; font-weight: 500; margin-bottom: 16px; text-align: center; }
+.dropdown-list { overflow-y: auto; flex: 1; }
+.dropdown-option {
+  padding: 16px; border-radius: 12px; margin-bottom: 8px;
+  background: var(--sys-bg); cursor: pointer;
+  transition: 0.2s; font-size: 15px;
+}
+.dropdown-option:active { background: var(--sys-surface-variant); }
+.dropdown-option.selected { background: var(--sys-primary); color: var(--sys-on-primary); }
+
+/* Copyright Footer */
+.copyright {
+  text-align: center; font-size: 12px; padding: 16px;
+  color: var(--sys-text-muted); cursor: pointer;
+  border-top: 1px solid var(--sys-border);
+  user-select: none; transition: color 0.3s;
+}
+
 </style>
 </head>
 
@@ -398,97 +276,102 @@ input, textarea, button { font-family: inherit; }
 
 <div class="overlay" id="overlay"></div>
 
-<div class="sidebar glass" id="sidebar">
-  <div class="sidebar-section">
-    <h4>Chat Settings</h4>
-    <button class="action-btn" onclick="clearChat()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      New Chat
-    </button>
-    <button class="action-btn danger" onclick="deleteChatHistory()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-      Clear History
-    </button>
-  </div>
-
-  <div class="sidebar-section">
-    <h4>System Profile</h4>
-    <textarea class="input-box" id="systemPrompt" rows="3" placeholder="Define AI behavior..."></textarea>
-  </div>
-
-  <div class="sidebar-section">
-    <h4>API Keys</h4>
-    <input class="input-box" id="api1" placeholder="OpenRouter API Key 1" type="password">
-    <input class="input-box" id="api2" placeholder="OpenRouter API Key 2 (Optional)" type="password">
-    <input class="input-box" id="api3" placeholder="OpenRouter API Key 3 (Optional)" type="password">
-  </div>
-
-  <div class="sidebar-section" style="flex:1;">
-    <h4>Model Management</h4>
-    <div class="add-model-wrapper">
-      <input type="text" id="newModelInput" class="input-box" placeholder="e.g. openai/gpt-4o">
-      <button class="add-btn" onclick="addNewModel()">+</button>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-content">
+    
+    <div class="group">
+      <h3>Actions</h3>
+      <button class="btn btn-primary" onclick="newChat()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        New Chat
+      </button>
+      <button class="btn btn-danger" onclick="deleteChat()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        Clear History
+      </button>
     </div>
-    <div class="model-list" id="sidebarModelList"></div>
+
+    <div class="group">
+      <h3>API Configuration</h3>
+      <input class="input-box" id="api1" placeholder="OpenRouter Key 1" type="password">
+      <input class="input-box" id="api2" placeholder="OpenRouter Key 2 (Fallback)" type="password">
+      <textarea class="input-box" id="systemPrompt" rows="3" placeholder="System Prompt / Personality"></textarea>
+      <button class="btn btn-primary" onclick="saveSettings()">Save Config</button>
+    </div>
+
+    <div class="group">
+      <h3>Manage Models</h3>
+      <div id="modelListContainer"></div>
+      <div class="add-model-row">
+        <input class="input-box" id="newModelInput" placeholder="ex: openai/gpt-4o">
+        <button class="btn" style="width: auto; padding: 0 16px;" onclick="addCustomModel()">Add</button>
+      </div>
+    </div>
   </div>
-
-  <button class="action-btn" onclick="saveSettings()">Save Configurations</button>
-
-  <div id="copyrightText" class="copyright">All Rights Reserved © Tapojit Mondal</div>
+  
+  <div class="copyright" id="copyrightText">All Rights Reserved © Tapojit Mondal</div>
 </div>
 
-<div class="main">
-  <div class="header glass">
-    <div class="header-left">
-      <button class="icon-btn" id="hamburger">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      </button>
-    </div>
+<div class="dropdown-modal" id="modelDropdown">
+  <div class="dropdown-header">Select Model</div>
+  <div class="dropdown-list" id="dropdownList"></div>
+</div>
+
+<div class="app-container">
+  
+  <div class="header">
+    <button class="icon-btn" id="hamburger">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+    </button>
     
-    <div class="custom-dropdown" id="modelDropdown">
-      <div class="dropdown-selected" id="dropdownSelected">
-        <span id="activeModelName">Select Model</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-      <div class="dropdown-options" id="dropdownOptions"></div>
+    <div class="model-selector" id="modelSelectorBtn">
+      <span id="currentModelDisplay">Select Model</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
 
-    <div class="header-right">
-      <button class="icon-btn" id="themeToggleBtn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-      </button>
-    </div>
+    <button class="icon-btn" id="themeBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
   </div>
 
   <div class="chat-container" id="chat"></div>
 
+  <div class="attached-image-container" id="attachedImgBox">
+    <img id="attachedImgPreview" src="" alt="attachment">
+    <button class="remove-img-btn" onclick="removeImage()">✕</button>
+  </div>
+
   <div class="input-area">
-    <div class="input-wrapper glass">
-      <button class="input-icon-btn" onclick="document.getElementById('imageUpload').click()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+    <div class="input-wrapper">
+      <button class="icon-btn" style="margin-bottom: 2px;" onclick="document.getElementById('imageUpload').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--sys-text-muted)" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
       </button>
       <input type="file" id="imageUpload" accept="image/*" style="display:none">
       
-      <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-        <div id="imagePreviewContainer" style="display:none;" class="image-preview-wrapper">
-          <img id="imgPreview" class="image-preview" src="" alt="upload">
-          <button class="remove-img-btn" onclick="removeImage()">✕</button>
-        </div>
-        <textarea class="input-field" id="userInput" rows="1" placeholder="Message rudrax..."></textarea>
-      </div>
-
+      <input type="text" class="input-field" id="userInput" placeholder="Message rudrax..." autocomplete="off">
+      
       <button class="send-btn" id="sendBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
       </button>
     </div>
   </div>
+
 </div>
 
 <script>
-// Configure Marked.js for better formatting
-marked.setOptions({ breaks: true, gfm: true });
+// Default Setup
+const defaultModels = [
+  "poolside/laguna-m.1:free", "poolside/laguna-xs.2:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+  "openrouter/owl-alpha", "google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free", "moonshotai/kimi-k2.6:free",
+  "deepseek/deepseek-v4-flash:free", "nvidia/nemotron-nano-12b-v2-vl:free", "nvidia/nemotron-3-nano-30b-a3b:free",
+  "liquid/lfm-2.5-1.2b-instruct:free", "liquid/lfm-2.5-1.2b-thinking:free", "nvidia/nemotron-3-super-120b-a12b:free",
+  "openai/gpt-oss-20b:free", "openai/gpt-oss-120b:free", "nvidia/nemotron-nano-9b-v2:free", "qwen/qwen3-next-80b-a3b-instruct:free",
+  "meta-llama/llama-3.2-3b-instruct:free", "meta-llama/llama-3.3-70b-instruct:free", "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+  "qwen/qwen3-coder:free", "z-ai/glm-4.5-air:free", "nousresearch/hermes-3-llama-3.1-405b:free", "nvidia/llama-nemotron-embed-vl-1b-v2:free"
+];
+const themes = ["dark", "light", "amoled"];
 
-// Elements
+// DOM Elements
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 const hamburger = document.getElementById('hamburger');
@@ -496,311 +379,299 @@ const chatContainer = document.getElementById('chat');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const imageUpload = document.getElementById('imageUpload');
-const imgPreviewContainer = document.getElementById('imagePreviewContainer');
-const imgPreview = document.getElementById('imgPreview');
+const modelDropdown = document.getElementById('modelDropdown');
+const dropdownList = document.getElementById('dropdownList');
+const modelSelectorBtn = document.getElementById('modelSelectorBtn');
+const currentModelDisplay = document.getElementById('currentModelDisplay');
+const attachedImgBox = document.getElementById('attachedImgBox');
+const attachedImgPreview = document.getElementById('attachedImgPreview');
+const copyrightText = document.getElementById('copyrightText');
+const themeBtn = document.getElementById('themeBtn');
 
 // State
+let savedModels = JSON.parse(localStorage.getItem("rudrax_models")) || [...defaultModels];
+let selectedModel = localStorage.getItem("rudrax_selected_model") || savedModels[0];
+let currentThemeIndex = themes.indexOf(localStorage.getItem("rudrax_theme") || "dark");
 let currentImage = null;
-let activeModel = "";
-let modelsArray = [];
-const themes = ['dark', 'light', 'amoled'];
-let currentThemeIndex = 0;
 
-const defaultModels = [
-  "poolside/laguna-m.1:free", "poolside/laguna-xs.2:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-  "openrouter/owl-alpha", "google/gemma-4-31b-it:free", "google/gemma-4-26b-a4b-it:free",
-  "moonshotai/kimi-k2.6:free", "deepseek/deepseek-v4-flash:free", "nvidia/nemotron-nano-12b-v2-vl:free",
-  "nvidia/nemotron-3-nano-30b-a3b:free", "liquid/lfm-2.5-1.2b-instruct:free", "liquid/lfm-2.5-1.2b-thinking:free",
-  "nvidia/nemotron-3-super-120b-a12b:free", "openai/gpt-oss-20b:free", "openai/gpt-oss-120b:free",
-  "nvidia/nemotron-nano-9b-v2:free", "qwen/qwen3-next-80b-a3b-instruct:free", "meta-llama/llama-3.2-3b-instruct:free",
-  "meta-llama/llama-3.3-70b-instruct:free", "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
-  "qwen/qwen3-coder:free", "z-ai/glm-4.5-air:free", "nousresearch/hermes-3-llama-3.1-405b:free",
-  "nvidia/llama-nemotron-embed-vl-1b-v2:free"
-];
-
-// UI Interactions
-hamburger.onclick = () => { sidebar.classList.add('open'); overlay.classList.add('active'); }
-overlay.onclick = () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.getElementById('modelDropdown').classList.remove('active'); }
-
-document.getElementById('dropdownSelected').onclick = (e) => {
-  e.stopPropagation();
-  document.getElementById('modelDropdown').classList.toggle('active');
-};
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.custom-dropdown')) {
-    document.getElementById('modelDropdown').classList.remove('active');
-  }
-});
-
-// Auto-resize textarea
-userInput.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = (this.scrollHeight < 120 ? this.scrollHeight : 120) + 'px';
-  toggleSendButton();
-});
-
-function toggleSendButton() {
-  if (userInput.value.trim().length > 0 || currentImage) {
-    sendBtn.classList.add('active');
-  } else {
-    sendBtn.classList.remove('active');
-  }
+// Initialization
+function init() {
+  applyTheme();
+  loadSettings();
+  loadChat();
+  renderModelManagement();
+  renderDropdown();
+  updateModelDisplay();
 }
 
-// Security
-const encrypt = (text) => btoa(encodeURIComponent(text));
-const decrypt = (text) => decodeURIComponent(atob(text));
+// UI Handlers
+hamburger.onclick = () => openModal(sidebar);
+overlay.onclick = closeAllModals;
+modelSelectorBtn.onclick = () => openModal(modelDropdown);
 
-// Theming
-document.getElementById('themeToggleBtn').onclick = () => {
-  currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+function openModal(element) {
+  overlay.classList.add('active');
+  element.classList.add('open');
+}
+function closeAllModals() {
+  overlay.classList.remove('active');
+  sidebar.classList.remove('open');
+  modelDropdown.classList.remove('open');
+}
+
+// Theme Management
+function applyTheme() {
   document.documentElement.setAttribute('data-theme', themes[currentThemeIndex]);
-  localStorage.setItem('rudrax_theme', themes[currentThemeIndex]);
+  localStorage.setItem("rudrax_theme", themes[currentThemeIndex]);
+}
+themeBtn.onclick = () => {
+  currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+  applyTheme();
 };
 
+// Copyright Color Logic
+copyrightText.addEventListener('click', () => {
+  const randomColor = `hsl(${Math.random() * 360}, 100%, 65%)`;
+  copyrightText.style.color = randomColor;
+});
 
-// Settings & Models Logic
-function loadSettings() {
-  const savedTheme = localStorage.getItem('rudrax_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  currentThemeIndex = themes.indexOf(savedTheme) > -1 ? themes.indexOf(savedTheme) : 0;
+// Encryption
+function encrypt(text){ return btoa(unescape(encodeURIComponent(text))); }
+function decrypt(text){ return decodeURIComponent(escape(atob(text))); }
 
-  let storedModels = JSON.parse(localStorage.getItem('rudrax_models'));
-  modelsArray = storedModels && storedModels.length > 0 ? storedModels : [...defaultModels];
-  
-  activeModel = localStorage.getItem('rudrax_active_model') || modelsArray[0];
-
-  const data = localStorage.getItem("rudrax_settings");
-  if(data) {
-    try {
-      const s = JSON.parse(decrypt(data));
-      document.getElementById("systemPrompt").value = s.system || "";
-      document.getElementById("api1").value = s.keys[0] || "";
-      document.getElementById("api2").value = s.keys[1] || "";
-      document.getElementById("api3").value = s.keys[2] || "";
-    } catch(e) {}
-  }
-  
-  renderModels();
-}
-
-function saveSettings() {
+// Settings Management
+function saveSettings(){
   localStorage.setItem("rudrax_settings", encrypt(JSON.stringify({
     system: document.getElementById("systemPrompt").value,
-    keys: [
-      document.getElementById("api1").value,
-      document.getElementById("api2").value,
-      document.getElementById("api3").value
-    ]
+    keys: [document.getElementById("api1").value, document.getElementById("api2").value]
   })));
-  localStorage.setItem('rudrax_models', JSON.stringify(modelsArray));
-  localStorage.setItem('rudrax_active_model', activeModel);
-  sidebar.classList.remove('open'); overlay.classList.remove('active');
+  closeAllModals();
 }
 
-function renderModels() {
-  // Sidebar List
-  const sidebarList = document.getElementById('sidebarModelList');
-  sidebarList.innerHTML = '';
-  modelsArray.forEach((model, index) => {
+function loadSettings(){
+  const data = localStorage.getItem("rudrax_settings");
+  if(!data) return;
+  try {
+    const s = JSON.parse(decrypt(data));
+    document.getElementById("systemPrompt").value = s.system || "";
+    document.getElementById("api1").value = s.keys[0] || "";
+    document.getElementById("api2").value = s.keys[1] || "";
+  } catch(e) {}
+}
+
+// Model Management
+function renderModelManagement() {
+  const container = document.getElementById('modelListContainer');
+  container.innerHTML = "";
+  savedModels.forEach((m, index) => {
     const div = document.createElement('div');
     div.className = 'model-item';
-    div.innerHTML = `<span>${model}</span> <button onclick="removeModel(${index})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>`;
-    sidebarList.appendChild(div);
+    div.innerHTML = `<span>${m}</span> <button onclick="removeModel(${index})"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>`;
+    container.appendChild(div);
   });
-
-  // Header Dropdown
-  const dropdownOpts = document.getElementById('dropdownOptions');
-  dropdownOpts.innerHTML = '';
-  modelsArray.forEach(model => {
-    const div = document.createElement('div');
-    div.className = `dropdown-option ${model === activeModel ? 'active' : ''}`;
-    div.innerText = model;
-    div.onclick = () => {
-      activeModel = model;
-      localStorage.setItem('rudrax_active_model', activeModel);
-      renderModels();
-      document.getElementById('modelDropdown').classList.remove('active');
-    };
-    dropdownOpts.appendChild(div);
-  });
-
-  document.getElementById('activeModelName').innerText = activeModel || "Select Model";
 }
 
-function addNewModel() {
+function addCustomModel() {
   const input = document.getElementById('newModelInput');
   const val = input.value.trim();
-  if (val && !modelsArray.includes(val)) {
-    modelsArray.unshift(val);
-    input.value = '';
-    if(!activeModel) activeModel = val;
-    renderModels();
+  if(val && !savedModels.includes(val)) {
+    savedModels.push(val);
+    localStorage.setItem("rudrax_models", JSON.stringify(savedModels));
+    input.value = "";
+    renderModelManagement();
+    renderDropdown();
   }
 }
 
 function removeModel(index) {
-  if(modelsArray[index] === activeModel) activeModel = modelsArray[0] !== activeModel ? modelsArray[0] : (modelsArray[1] || "");
-  modelsArray.splice(index, 1);
-  renderModels();
+  if (savedModels[index] === selectedModel) {
+    selectedModel = savedModels[0] || "";
+    localStorage.setItem("rudrax_selected_model", selectedModel);
+    updateModelDisplay();
+  }
+  savedModels.splice(index, 1);
+  localStorage.setItem("rudrax_models", JSON.stringify(savedModels));
+  renderModelManagement();
+  renderDropdown();
+}
+
+// Custom Dropdown Render
+function renderDropdown() {
+  dropdownList.innerHTML = "";
+  savedModels.forEach(m => {
+    const div = document.createElement('div');
+    div.className = `dropdown-option ${m === selectedModel ? 'selected' : ''}`;
+    div.innerText = m;
+    div.onclick = () => {
+      selectedModel = m;
+      localStorage.setItem("rudrax_selected_model", selectedModel);
+      updateModelDisplay();
+      renderDropdown();
+      closeAllModals();
+    };
+    dropdownList.appendChild(div);
+  });
+}
+
+function updateModelDisplay() {
+  currentModelDisplay.innerText = selectedModel || "Select Model";
 }
 
 // Chat Management
 function saveChat(){ localStorage.setItem("rudrax_chat", chatContainer.innerHTML); }
-function loadChat(){ chatContainer.innerHTML = localStorage.getItem("rudrax_chat") || ""; scrollChat(); }
+function loadChat(){ chatContainer.innerHTML = localStorage.getItem("rudrax_chat") || ""; scrollBottom(); }
+function newChat() { chatContainer.innerHTML = ""; saveChat(); closeAllModals(); }
+function deleteChat() { localStorage.removeItem("rudrax_chat"); chatContainer.innerHTML = ""; closeAllModals(); }
+function scrollBottom() { chatContainer.scrollTop = chatContainer.scrollHeight; }
 
-function clearChat() { chatContainer.innerHTML = ""; sidebar.classList.remove('open'); overlay.classList.remove('active'); saveChat(); }
-function deleteChatHistory() { clearChat(); localStorage.removeItem("rudrax_chat"); }
+// Input Logic
+userInput.addEventListener('input', () => {
+  if(userInput.value.trim().length > 0 || currentImage) sendBtn.classList.add('active');
+  else sendBtn.classList.remove('active');
+});
 
-function scrollChat() { chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' }); }
-
-function addMessage(text, type, isHtml = false){
-  const div = document.createElement("div");
-  div.className = `msg ${type}`;
-  div.innerHTML = isHtml ? text : (type === 'bot' ? marked.parse(text) : text);
-  chatContainer.appendChild(div);
-  scrollChat();
-  saveChat();
-  return div;
-}
-
-// Media Handling
 imageUpload.onchange = () => {
   const file = imageUpload.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    currentImage = e.target.result;
-    imgPreview.src = currentImage;
-    imgPreviewContainer.style.display = 'inline-block';
-    toggleSendButton();
+  if(file){
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentImage = e.target.result;
+      attachedImgPreview.src = currentImage;
+      attachedImgBox.style.display = "block";
+      sendBtn.classList.add('active');
+    }
+    reader.readAsDataURL(file);
   }
-  reader.readAsDataURL(file);
 }
 
 function removeImage() {
   currentImage = null;
-  imgPreviewContainer.style.display = 'none';
+  attachedImgBox.style.display = "none";
   imageUpload.value = "";
-  toggleSendButton();
+  if(userInput.value.trim().length === 0) sendBtn.classList.remove('active');
 }
 
-// Core Chat Logic
-async function streamResponse(model, keys, messages, botDiv) {
-  let success = false;
-  
-  for(let key of keys) {
-    try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` },
-        body: JSON.stringify({ model, messages, stream: true })
-      });
-      
-      if(!response.ok) continue; // Try next key
+function addMessage(text, type, isHtml = false){
+  const div = document.createElement("div");
+  div.className = `msg ${type}`;
+  div.innerHTML = isHtml ? text : text;
+  chatContainer.appendChild(div);
+  scrollBottom();
+  saveChat();
+  return div;
+}
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let fullText = "";
-      
-      while(true) {
-        const {done, value} = await reader.read();
-        if(done) break;
-        const chunk = decoder.decode(value);
-        const lines = chunk.split("\n");
-        
-        for(let line of lines) {
-          if(line.startsWith("data:")) {
-            const data = line.replace("data:", "").trim();
-            if(data === "[DONE]") return true;
-            try {
-              const json = JSON.parse(data);
-              if(json.choices[0].delta.content) {
-                fullText += json.choices[0].delta.content;
-                // Minor debounce optimization for smooth rendering
+// AI Streaming with Anti-Flicker (Throttled DOM update)
+async function streamResponse(model, key, messages, botDiv){
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` },
+    body: JSON.stringify({ model, messages, stream: true })
+  });
+  
+  if(!response.ok) throw new Error("API Error");
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let fullText = "";
+  let renderFrame = null;
+  
+  while(true){
+    const {done, value} = await reader.read();
+    if(done) {
+      if(renderFrame) cancelAnimationFrame(renderFrame);
+      botDiv.innerHTML = marked.parse(fullText); // Final render
+      saveChat();
+      break;
+    }
+    const chunk = decoder.decode(value);
+    const lines = chunk.split("\n");
+    
+    for(let line of lines){
+      if(line.startsWith("data:")){
+        const data = line.replace("data:", "").trim();
+        if(data === "[DONE]") continue;
+        try {
+          const json = JSON.parse(data);
+          if(json.choices[0].delta.content) {
+            fullText += json.choices[0].delta.content;
+            
+            // Anti-flicker: Update DOM using requestAnimationFrame
+            if(!renderFrame) {
+              renderFrame = requestAnimationFrame(() => {
                 botDiv.innerHTML = marked.parse(fullText);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-              }
-            } catch(e) {}
+                scrollBottom();
+                renderFrame = null;
+              });
+            }
           }
-        }
+        } catch(e) {}
       }
-      success = true;
-      break; 
-    } catch(e) {
-      console.log("Switching key due to error...");
     }
   }
-  return success;
 }
 
-async function handleSend() {
+async function handleSend(){
   let msg = userInput.value.trim();
   if(!msg && !currentImage) return;
-  
-  // Reset UI
   userInput.value = "";
-  userInput.style.height = 'auto';
   sendBtn.classList.remove('active');
-  
-  let displayMsg = msg.replace(/\n/g, '<br>');
+
+  let displayMsg = msg;
   if(currentImage) {
-    displayMsg += `<br><img src="${currentImage}" class="image-preview" style="margin-top:8px;">`;
+    displayMsg += `<br><img src="${currentImage}" class="image-preview">`;
+    removeImage(); // Clear attachment UI
   }
   
   addMessage(displayMsg, "user", true);
-  const botDiv = addMessage('<span style="color:var(--text-muted)">Thinking...</span>', "bot", true);
+  const botDiv = addMessage('<span style="color:var(--sys-text-muted)">Thinking...</span>', "bot", true);
 
   const settingsData = localStorage.getItem("rudrax_settings");
-  if(!settingsData) {
-    botDiv.innerHTML = "Please configure settings (API keys) first.";
+  if(!settingsData || !selectedModel) {
+    botDiv.innerHTML = "Please select a model and add an API key in settings.";
     return;
   }
   
   const settings = JSON.parse(decrypt(settingsData));
   const keys = settings.keys.filter(k => k);
-  
-  if(!activeModel) { botDiv.innerHTML = "Please select a model."; return; }
-  if(keys.length === 0) { botDiv.innerHTML = "Please add an API key in settings."; return; }
-
-  let messages = [{role: "system", content: settings.system || "You are a helpful AI."}];
-  
-  if(currentImage){
-    messages.push({
-      role: "user", 
-      content: [
-        {type: "text", text: msg || "Analyze this image"},
-        {type: "image_url", image_url: {url: currentImage}}
-      ]
-    });
-    removeImage();
-  } else {
-    messages.push({role: "user", content: msg});
+  if(keys.length === 0) {
+    botDiv.innerHTML = "Please configure your API keys.";
+    return;
   }
 
-  botDiv.innerHTML = '<span style="color:var(--text-muted)">Generating...</span>';
+  let messages = [{role: "system", content: settings.system || "You are rudrax, a helpful AI assistant."}];
   
-  const success = await streamResponse(activeModel, keys, messages, botDiv);
-  if(!success) botDiv.innerHTML = "All keys failed or model unavailable. Please check settings.";
-  saveChat();
+  // Need to extract history (simplified version for this UI)
+  messages.push({
+    role: "user", 
+    content: currentImage && displayMsg.includes("<img") 
+      ? [{type: "text", text: msg || "Analyze this image"}, {type: "image_url", image_url: {url: currentImage}}]
+      : msg
+  });
+
+  let success = false;
+  for(let key of keys){
+    try {
+      botDiv.innerHTML = ""; 
+      await streamResponse(selectedModel, key, messages, botDiv);
+      success = true;
+      break;
+    } catch(e) {
+      console.log("Switching key due to error...");
+    }
+  }
+  
+  if(!success) {
+    botDiv.innerHTML = "Error connecting to model. Check API keys or try another model.";
+    saveChat();
+  }
 }
 
-// Events
 sendBtn.onclick = handleSend;
-userInput.addEventListener("keydown", e => { 
-  if(e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } 
-});
+userInput.addEventListener("keydown", e => { if(e.key === "Enter") handleSend(); });
 
-// Copyright Magic Color
-document.getElementById('copyrightText').addEventListener('click', (e) => {
-  const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-  e.target.style.color = randomColor;
-});
-
-// Init
-loadSettings();
-loadChat();
-
+init();
 </script>
+
 </body>
 </html>
